@@ -1,0 +1,30 @@
+def constrainedSubsetSum(nums, k):
+    n = len(nums)
+    dp = [0] * n
+    result = float('-inf')
+    deque = []  
+
+    for i in range(n):
+        while deque and deque[0] < i - k:
+            deque.pop(0)
+        dp[i] = max(nums[i], nums[i] + (dp[deque[0]] if deque else 0))
+        while deque and dp[i] > dp[deque[-1]]:
+            deque.pop()
+
+        deque.append(i)
+
+        result = max(result, dp[i])
+
+    return result
+# Приклади використання
+nums1 = [10, 2, -10, 5, 20]
+k1 = 2
+print(constrainedSubsetSum(nums1, k1))  # Виведе: 37
+
+nums2 = [-1, -2, -3]
+k2 = 1
+print(constrainedSubsetSum(nums2, k2))  # Виведе: -1
+
+nums3 = [10, -2, -10, -5, 20]
+k3 = 2
+print(constrainedSubsetSum(nums3, k3))  # Виведе: 23
